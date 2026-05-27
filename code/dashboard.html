@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> ZOTA PANEL</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="profile-container">
+            <div class="profile-glow"></div>
+            <img src="https://images.unsplash.com/photo-1578632767115-351597cf2477?q=80&w=500&auto=format&fit=crop" alt="Profile Avatar" class="profile-img">
+        </div>
+
+        <h1 class="title-main"> ZOTA VIP MOD</h1>
+        <h2 class="title-sub"> ROOT PANEL</h2>
+
+        <div class="display-box" id="keyDisplay">
+            – Press Generate –
+        </div>
+
+        <button class="btn-generate" id="generateBtn">Generate Key</button>
+
+        <div class="telegram-container">
+            <div class="telegram-text">
+                <span>❤️</span> Any Problem? Join Telegram!
+            </div>
+            <a href="https://t.me/zotabhai7899" target="_blank" class="btn-telegram">Join Now</a>
+        </div>
+
+    </div>
+
+    <script>
+        // DOM Elements
+        const generateBtn = document.getElementById('generateBtn');
+        const keyDisplay = document.getElementById('keyDisplay');
+
+        // Function to create a stylized random key output
+        function generateRandomKey() {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+            let segment1 = '';
+            let segment2 = '';
+            
+            // Build a 10 character alpha-numeric token (e.g., XIT9-A28K)
+            for (let i = 0; i < 4; i++) {
+                segment1 += characters.charAt(Math.floor(Math.random() * characters.length));
+                segment2 += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            
+            return `ZOTA-${segment1}-${segment2}`;
+        }
+
+        // Click Event Listener
+        generateBtn.addEventListener('click', () => {
+            // Give temporary visual feedback
+            keyDisplay.classList.remove('active');
+            keyDisplay.innerText = "Generating...";
+            
+            setTimeout(() => {
+                const newKey = generateRandomKey();
+                keyDisplay.innerText = newKey;
+                keyDisplay.classList.add('active');
+            }, 400); // Small realistic processing delay
+        });
+        
+        // MUST RUN FIRST: Check for active login session token
+if (sessionStorage.getItem("zota_session_active") !== "true") {
+    // Alert the user and bounce them back to the login gateway
+    alert("Unauthorized Access! Please log in first.");
+    window.location.href = "index.html";
+}
+
+// --- Update your existing Logout Trigger to clear the session token ---
+document.getElementById('logoutTrigger').addEventListener('click', function(e) {
+    e.preventDefault();
+    
+    // Clear session tokens entirely
+    sessionStorage.removeItem("zota_session_active");
+    
+    // Redirect cleanly
+    window.location.href = "index.html?logout=success"; 
+});
+
+
+    </script>
+</body>
+</html>
