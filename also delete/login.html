@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard App</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+    <aside class="sidebar-drawer" id="sidebarDrawer">
+        <div class="sidebar-header">
+            <div class="sidebar-brand">
+                <h2>ADMIN PANEL</h2>
+            </div>
+            <button class="close-sidebar-btn" id="sidebarCloseBtn">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+        </div>
+        <hr class="sidebar-divider">
+        
+        <nav class="sidebar-menu">
+            <a href="#" class="menu-item active-link" data-target="dashboard">
+                <i class="fa-solid fa-house"></i> Dashboard
+            </a>
+            <a href="#" class="menu-item" data-target="deposit">
+                <i class="fa-solid fa-wallet"></i> Deposit
+            </a>
+            <a href="key.html" class="menu-item">
+                <i class="fa-solid fa-cart-shopping"></i> Buy Keys
+            </a>
+            <a href="#" class="menu-item" data-target="resellers">
+                <i class="fa-solid fa-users-gear"></i> My Resellers
+            </a>
+            <a href="#" class="menu-item" data-target="my-keys">
+                <i class="fa-solid fa-key"></i> My Keys
+            </a>
+            <a href="#" class="menu-item" data-target="history">
+                <i class="fa-solid fa-clock-rotate-left"></i> History
+            </a>
+            <a href="#" class="menu-item" data-target="refer">
+                <i class="fa-solid fa-gift"></i> Refer And Earn Money
+            </a>
+
+            <div class="menu-section-label">ACCOUNT</div>
+            
+            <a href="#" class="menu-item" data-target="profile">
+                <i class="fa-solid fa-user-lock"></i> Api And Password
+            </a>
+            <a href="#" class="menu-item logout-link" id="logoutBtn">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i> Logout
+            </a>
+        </nav>
+    </aside>
+
+    <header class="top-bar">
+        <button class="menu-btn" id="menuToggleBtn">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <div class="app-logo-title"></div>
+        <div class="profile-badge">
+            <div class="profile-circle">
+                <i class="fa-solid fa-user-shield"></i>
+                <span class="online-indicator"></span>
+            </div>
+        </div>
+    </header>
+
+    <main class="app-content">
+
+        <div id="dashboardView" class="dashboard-container">
+            <div class="card deposit" data-route="deposit">
+                <i class="fa-solid fa-wallet icon"></i>
+                <span class="label">DEPOSIT</span>
+            </div>
+            
+            <a href="key.html" class="card buy-keys" style="text-decoration: none; color: inherit; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+                <i class="fa-solid fa-cart-shopping icon"></i>
+                <span class="label">BUY KEYS</span>
+            </a>
+
+            <div class="card resellers" data-route="resellers">
+                <i class="fa-solid fa-users-gear icon"></i>
+                <span class="label">MY RESELLERS</span>
+            </div>
+            <div class="card my-keys" data-route="my-keys">
+                <i class="fa-solid fa-key icon"></i>
+                <span class="label">MY KEYS</span>
+            </div>
+            <div class="card history" data-route="history">
+                <i class="fa-solid fa-clock-rotate-left icon"></i>
+                <span class="label">HISTORY</span>
+            </div>
+            <div class="card refer" data-route="refer">
+                <i class="fa-solid fa-gift icon"></i>
+                <span class="label">REFER & EARN</span>
+            </div>
+            <div class="card profile-settings" data-route="profile">
+                <i class="fa-solid fa-user-gear icon"></i>
+                <span class="label">PROFILE SETTINGS</span>
+            </div>
+        </div>
+
+        <div id="depositView" class="deposit-container hidden">
+            <div class="info-card purple-glow">
+                <span class="info-title">CURRENT BALANCE</span>
+                <span class="info-value">₹99999.00</span>
+            </div>
+            <div class="info-card cyan-glow">
+                <span class="info-title">TODAY DEPOSIT</span>
+                <span class="info-value">₹0.00</span>
+            </div>
+            <div class="methods-grid">
+                <button class="method-btn active-btn">INSTANT UPI</button>
+                <button class="method-btn">BINANCE / USDT</button>
+                <button class="method-btn">BKASH / NAGAD</button>
+                <button class="method-btn admin-text">ADMIN SUPPORT</button>
+            </div>
+            <div class="form-panel green-glow">
+                <h3>Instant Upi Deposit</h3>
+                <button class="how-to-btn">HOW TO DEPOSIT?</button>
+                <div class="input-wrapper">
+                    <label>AMOUNT (₹)</label>
+                    <input type="number" placeholder="Enter amount" id="depositAmount">
+                </div>
+                <div class="input-wrapper">
+                    <label>MOBILE NUMBER</label>
+                    <input type="tel" placeholder="Your Mobile Number" id="userPhone">
+                </div>
+                <button class="submit-pay-btn">PAY INSTANTLY</button>
+            </div>
+            <button id="backBtn" class="back-link">← Back to Dashboard</button>
+        </div>
+
+    </main>
+
+    <div class="floating-btn" id="telegramBtn">
+        <i class="fa-solid fa-paper-plane"></i>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+</html>

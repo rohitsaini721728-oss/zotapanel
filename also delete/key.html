@@ -1,0 +1,547 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zota VIP Panel Dashboard</title>
+    <style>
+        :root {
+            --bg-color: #0b0f19;
+            --card-bg: #0e1726;
+            --item-bg: #111c30;
+            --text-main: #ffffff;
+            --text-muted: #8892b0;
+            --cyan: #00e5ff;
+            --orange: #ff7b00;
+            --purple: #9d4edd;
+            --red: #ff3344;
+            --border-radius: 8px;
+            --modal-item-bg: #131926;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+            padding: 80px 20px 20px 20px; /* Top padding added to clear the fixed balance bar */
+        }
+
+        /* --- Top Balance Row Bar --- */
+        .top-balance-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: var(--card-bg);
+            border-bottom: 1px solid #1e293b;
+            padding: 14px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 900;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4);
+        }
+
+        .balance-label {
+            color: var(--text-muted);
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
+
+        .balance-display-value {
+            color: var(--cyan);
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* --- Device Filter Section --- */
+        .filter-section {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 20px;
+            border: 1px solid #1e293b;
+        }
+
+        .filter-title {
+            color: var(--cyan);
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .btn-filter {
+            background: transparent;
+            border: 1px solid var(--orange);
+            color: var(--orange);
+            padding: 10px 16px;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 13px;
+            transition: all 0.2s ease;
+        }
+
+        .btn-filter.active {
+            background-color: var(--cyan);
+            border-color: var(--cyan);
+            color: #000;
+            box-shadow: 0 0 15px rgba(0, 229, 255, 0.4);
+        }
+
+        /* --- Key Rates Section --- */
+        .rates-title {
+            color: var(--cyan);
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 15px;
+        }
+
+        .panel-card {
+            background-color: var(--card-bg);
+            border-radius: var(--border-radius);
+            padding: 24px 20px;
+            border: 1px solid rgba(157, 78, 221, 0.2);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            text-align: center;
+        }
+
+        .panel-header {
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+        }
+
+        .features-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .feature-item {
+            background-color: var(--item-bg);
+            border-left: 4px solid var(--cyan);
+            border-radius: 4px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #cbd5e1;
+            text-align: left;
+        }
+
+        .feature-icon {
+            color: var(--cyan);
+            font-size: 14px;
+        }
+
+        .expand-chevron {
+            color: var(--text-muted);
+            font-size: 20px;
+            margin-bottom: 20px;
+            cursor: pointer;
+            display: inline-block;
+            transition: transform 0.3s;
+        }
+        
+        .expand-chevron.rotated {
+            transform: rotate(180deg);
+        }
+
+        /* --- Action Buttons --- */
+        .action-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .btn-action {
+            background: transparent;
+            padding: 12px;
+            border-radius: var(--border-radius);
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            transition: background 0.2s;
+        }
+
+        .btn-update {
+            border: 1px solid var(--cyan);
+            color: var(--text-main);
+        }
+        .btn-update:hover {
+            background: rgba(0, 229, 255, 0.1);
+        }
+
+        .btn-video {
+            border: 1px solid var(--red);
+            color: var(--text-main);
+        }
+        .btn-video:hover {
+            background: rgba(255, 51, 68, 0.1);
+        }
+
+        .btn-buy {
+            width: 100%;
+            background: linear-gradient(90deg, #b5179e, #7209b7);
+            border: none;
+            color: white;
+            padding: 16px;
+            border-radius: 25px;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(114, 9, 183, 0.4);
+            transition: opacity 0.2s;
+        }
+
+        .btn-buy:hover {
+            opacity: 0.9;
+        }
+
+        .back-dashboard {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 13px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            align-self: flex-start;
+            margin-top: -8px;
+            transition: color 0.2s;
+        }
+
+        .back-dashboard:hover {
+            color: var(--text-main);
+        }
+
+        /* --- Popup Modal Layout --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(5px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.25s ease;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-content {
+            background-color: #0d111a;
+            border: 2px solid #3c2a73;
+            border-radius: 14px;
+            padding: 24px 16px 16px 16px;
+            width: 92%;
+            max-width: 420px;
+            box-shadow: 0 0 25px rgba(114, 9, 183, 0.3);
+            transform: scale(0.9);
+            transition: transform 0.25s ease;
+            position: relative;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+
+        .price-row-container {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .price-card {
+            background-color: var(--modal-item-bg);
+            border: 1px solid #1f2636;
+            border-radius: 10px;
+            padding: 14px 16px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .price-info {
+            text-align: left;
+        }
+
+        .duration-label {
+            color: #8e99b3;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .amount-label {
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: 700;
+        }
+
+        .controls-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .quantity-box {
+            background-color: #1a2233;
+            border: 1px solid #2d384e;
+            color: #ffffff;
+            width: 46px;
+            height: 38px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 15px;
+            font-weight: 600;
+            outline: none;
+        }
+
+        .quantity-box::-webkit-inner-spin-button,
+        .quantity-box::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+        .btn-modal-buy {
+            background: linear-gradient(135deg, #e024a5, #7b11d6);
+            border: none;
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 13px;
+            padding: 10px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: transform 0.1s;
+        }
+
+        .btn-modal-buy:active {
+            transform: scale(0.96);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-balance-bar">
+        <span class="balance-label">CURRENT WALLET BALANCE</span>
+        <span class="balance-display-value" id="topNavBalance">₹0.00</span>
+    </div>
+
+    <div class="container">
+        
+        <div class="filter-section">
+            <div class="filter-title">DEVICE FILTER</div>
+            <div class="filter-buttons">
+                <button class="btn-filter active" onclick="toggleFilter(this)">ALL SYSTEMS</button>
+                <button class="btn-filter" onclick="toggleFilter(this)">ONLY PC</button>
+                <button class="btn-filter" onclick="toggleFilter(this)">ROOT + NONROOT</button>
+            </div>
+        </div>
+
+        <div>
+            <div class="rates-title">&gt;&gt; FEATURES</div>
+            
+            <div class="panel-card">
+                <div class="panel-header">ZOTA VIP PANEL</div>
+                
+                <div class="features-list">
+                    <div class="feature-item"><span class="feature-icon">⚡</span> -Silent Aim</div>
+                    <div class="feature-item"><span class="feature-icon">⚡</span> Aim Magnet</div>
+                    <div class="feature-item"><span class="feature-icon">⚡</span> Speed</div>
+                    <div class="feature-item"><span class="feature-icon">⚡</span> Ghost H@ck</div>
+                    <div class="feature-item"><span class="feature-icon">⚡</span> Headshot</div>
+                    <div class="feature-item"><span class="feature-icon">⚡</span> Esp all Location</div>
+                    <div class="feature-item"><span class="feature-icon">⚡</span> CS / BR Rank Working</div>
+                </div>
+
+                <div class="expand-chevron" id="expandBtn" onclick="toggleExpand()">▼</div>
+
+                <div class="action-grid">
+                    <a href="https://t.me/zotabhai7899" target="_blank" style="text-decoration: none; width: 100%;">
+                        <button class="btn-action btn-update" style="width: 100%;">
+                            <span>📥</span> CHECK UPDATE FILE
+                        </button>
+                    </a>
+                    <button class="btn-action btn-video">
+                        <span>▶</span> CHECK VIDEO/FEEDBACK
+                    </button>
+                </div>
+
+                <button class="btn-buy" onclick="openModal()">BUY RESELLER KEY</button>
+            </div>
+        </div>
+
+        <a href="login.html" class="back-dashboard">← Back to Dashboard</a>
+
+    </div>
+
+    <div class="modal-overlay" id="priceModal" onclick="closeModalOutside(event)">
+        <div class="modal-content">
+            <div class="price-row-container">
+                
+                <div class="price-card">
+                    <div class="price-info">
+                        <div class="duration-label">1 DaYs</div>
+                        <div class="amount-label">₹50.00</div>
+                    </div>
+                    <div class="controls-group">
+                        <input type="number" class="quantity-box" value="1" min="1">
+                        <button class="btn-modal-buy" onclick="processPurchase('1 Day', 50)">BUY</button>
+                    </div>
+                </div>
+
+                <div class="price-card">
+                    <div class="price-info">
+                        <div class="duration-label">7 DaYs</div>
+                        <div class="amount-label">₹150.00</div>
+                    </div>
+                    <div class="controls-group">
+                        <input type="number" class="quantity-box" value="1" min="1">
+                        <button class="btn-modal-buy" onclick="processPurchase('7 Days', 150)">BUY</button>
+                    </div>
+                </div>
+
+                <div class="price-card">
+                    <div class="price-info">
+                        <div class="duration-label">15 DaYs</div>
+                        <div class="amount-label">₹300.00</div>
+                    </div>
+                    <div class="controls-group">
+                        <input type="number" class="quantity-box" value="1" min="1">
+                        <button class="btn-modal-buy" onclick="processPurchase('15 Days', 300)">BUY</button>
+                    </div>
+                </div>
+
+                <div class="price-card">
+                    <div class="price-info">
+                        <div class="duration-label">30 DaYs</div>
+                        <div class="amount-label">₹400.00</div>
+                    </div>
+                    <div class="controls-group">
+                        <input type="number" class="quantity-box" value="1" min="1">
+                        <button class="btn-modal-buy" onclick="processPurchase('30 Days', 400)">BUY</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Synchronize and render top bar balance value from LocalStorage
+        function renderBalance() {
+            let currentBalance = parseFloat(localStorage.getItem("walletBalance"));
+            if (isNaN(currentBalance)) {
+                currentBalance = 999.00;
+                localStorage.setItem("walletBalance", currentBalance.toFixed(2));
+            }
+            document.getElementById("topNavBalance").textContent = "₹" + currentBalance.toLocaleString('en-IN', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+        }
+
+        // Run balance sync on load
+        document.addEventListener("DOMContentLoaded", renderBalance);
+
+        function toggleFilter(element) {
+            const buttons = element.parentElement.querySelectorAll('.btn-filter');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+        }
+
+        function toggleExpand() {
+            const chevron = document.getElementById('expandBtn');
+            chevron.classList.toggle('rotated');
+        }
+
+        function openModal() {
+            document.getElementById('priceModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('priceModal').classList.remove('active');
+        }
+
+        function closeModalOutside(event) {
+            if (event.target.classList.contains('modal-overlay')) {
+                closeModal();
+            }
+        }
+
+        // Handles Purchase calculations, data updating, and redirection handling
+        function processPurchase(tier, rate) {
+            const row = event.target.closest('.price-card');
+            const qty = parseInt(row.querySelector('.quantity-box').value) || 1;
+            const totalCost = qty * rate;
+            
+            let currentBalance = parseFloat(localStorage.getItem("walletBalance")) || 0;
+            
+            if (currentBalance >= totalCost) {
+                // Deduct balance
+                currentBalance -= totalCost;
+                localStorage.setItem("walletBalance", currentBalance.toFixed(2));
+                
+                // Refresh Top bar balance element instantly
+                renderBalance();
+                
+                alert(`Successfully purchased ${qty} key(s) for ${tier}!\n₹${totalCost.toFixed(2)} deducted from balance.`);
+                closeModal();
+            } else {
+                // If insufficient, set redirection flag and forward to index.html dashboard deposit option
+                localStorage.setItem("redirectToDeposit", "true");
+                alert("Insufficient Balance! Redirecting you to the Deposit panel...");
+                window.location.href = "index.html";
+            }
+        }
+    </script>
+</body>
+</html>
